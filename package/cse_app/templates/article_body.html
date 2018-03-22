@@ -1,0 +1,22 @@
+<div class="panel-group" id="accordion">			
+{% if articles %}
+	{% for article in articles %}
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+			<h4 class="panel-title">
+			  <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}" style="text-decoration:none">{{ article.news_title }}</a>
+			</h4>
+		  </div>
+		  <div id="collapse{{ forloop.counter }}" class="panel-collapse collapse">
+			<div class="panel-body">Category: {{ article.news_category }}</div>
+			<div class="panel-body">{{ article.news_content }}</div>
+			<div class="panel-body">Source: <a href="{{ article.news_url }}" style="text-decoration:none" target="_blank">{{ article.news_url }}</a></div>
+		  </div>
+		</div>
+	{% endfor %}
+{% else %}
+	<div class="panel panel-danger">
+	  <div class="panel-heading">No Results Found !</div>
+	</div>
+{% endif %}
+</div>
