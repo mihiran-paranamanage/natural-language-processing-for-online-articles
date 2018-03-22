@@ -19,9 +19,9 @@ class Categorizer:
         make sure that all categories have the same number of keywords, to get better result.
         '''
         data_set = [('position vision mission goal objective authority capital', 'position'),
-                    ('award win won ceremony congratulation congratulate honour', 'award'),
-                    ('expansion new branch bureau division office section', 'expansion'),
-                    ('finance investment asset contribution five six seven', 'finance'),
+                    ('award win won ceremony congratulation congratulate honour', 'awards'),
+                    ('expansion new branch bureau division office section', 'expanision'),
+                    ('finance investment asset contribution five six seven', 'financing'),
                     ('production products goods four five six seven', 'production'),
                     ('quality good product four five six seven', 'quality'),
                     ('merchandising marketing three four five six seven', 'merchandising'),
