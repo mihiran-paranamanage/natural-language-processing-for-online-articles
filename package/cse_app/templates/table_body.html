@@ -1,8 +1,0 @@
-<div>
-{% for comp in company_list %}
-  <tr>
-	<th scope="row">{{ forloop.counter }}</th>
-    <td><a href="{% url 'cse_app:news' comp.id %}" style="text-decoration:none">{{ comp.comp_name }}</a></td>
-  </tr>
-{% endfor %}
-</div>

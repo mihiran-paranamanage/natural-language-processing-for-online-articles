@@ -1,22 +1,52 @@
-<div class="panel-group" id="accordion">			
-{% if articles %}
-	{% for article in articles %}
-		<div class="panel panel-default">
-		  <div class="panel-heading">
-			<h4 class="panel-title">
-			  <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}" style="text-decoration:none">{{ article.news_title }}</a>
-			</h4>
-		  </div>
-		  <div id="collapse{{ forloop.counter }}" class="panel-collapse collapse">
-			<div class="panel-body">Category: {{ article.news_category }}</div>
-			<div class="panel-body">{{ article.news_content }}</div>
-			<div class="panel-body">Source: <a href="{{ article.news_url }}" style="text-decoration:none" target="_blank">{{ article.news_url }}</a></div>
-		  </div>
+<div class="row">
+	<div class="col-xs-6 col-sm-6 col-md-6">
+		<h5>SUNDAY OBSERVER</h5>
+		<div class="panel-group" id="accordion1">			
+		{% if articles.0 %}
+			{% for article in articles.0 %}
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+					<h4 class="panel-title">
+					  <a data-toggle="collapse" data-parent="#accordion1" href="#collapse1_{{ forloop.counter }}" style="text-decoration:none">{{ article.news_title }}</a>
+					</h4>
+				  </div>
+				  <div id="collapse1_{{ forloop.counter }}" class="panel-collapse collapse">
+					<div class="panel-body">Category: {{ article.news_category }}</div>
+					<div class="panel-body">{{ article.news_content }}</div>
+					<div class="panel-body">Source: <a href="{{ article.news_url }}" style="text-decoration:none" target="_blank">{{ article.news_url }}</a></div>
+				  </div>
+				</div>
+			{% endfor %}
+		{% else %}
+			<div class="panel panel-danger">
+			  <div class="panel-heading">No Results Found !</div>
+			</div>
+		{% endif %}
 		</div>
-	{% endfor %}
-{% else %}
-	<div class="panel panel-danger">
-	  <div class="panel-heading">No Results Found !</div>
 	</div>
-{% endif %}
+	<div class="col-xs-6 col-sm-6 col-md-6">
+		<h5>DAILY MIRROR</h5>
+		<div class="panel-group" id="accordion2">			
+		{% if articles.1 %}
+			{% for article in articles.1 %}
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+					<h4 class="panel-title">
+					  <a data-toggle="collapse" data-parent="#accordion2" href="#collapse2_{{ forloop.counter }}" style="text-decoration:none">{{ article.news_title }}</a>
+					</h4>
+				  </div>
+				  <div id="collapse2_{{ forloop.counter }}" class="panel-collapse collapse">
+					<div class="panel-body">Category: {{ article.news_category }}</div>
+					<div class="panel-body">{{ article.news_content }}</div>
+					<div class="panel-body">Source: <a href="{{ article.news_url }}" style="text-decoration:none" target="_blank">{{ article.news_url }}</a></div>
+				  </div>
+				</div>
+			{% endfor %}
+		{% else %}
+			<div class="panel panel-danger">
+			  <div class="panel-heading">No Results Found !</div>
+			</div>
+		{% endif %}
+		</div>
+	</div>
 </div>
