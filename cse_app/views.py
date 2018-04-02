@@ -30,5 +30,5 @@ def news(request, comp_id):
     comp.news_set.all().delete()
     for article in NewsReader().search_results(comp.comp_name):
         comp.news_set.create(news_category=article['category'], news_title=article['title'], news_url=article['url'], news_content=article['content'])
-    context = {'categories': [("--------- ALL ---------","all"), ("POSITION","position"), ("AWARDS","awards"), ("EXPANTIONS","expanision"), ("FINANCE","financing"), ("PRODUCTIONS","production"), ("QUALITY","quality"), ("MERCHANDISING","merchandising"), ("CSR","csr")], 'comp':comp, 'articles':[comp.news_set.filter(news_url__contains='sundayobserver'), comp.news_set.filter(news_url__contains='dailymirror')]}
+    context = {'categories': [("--------- ALL ---------","all"), ("AWARDS","awards"), ("EXPANTION","expansion"), ("FINANCING","financing"), ("PRODUCTION","production"), ("OTHERS","others")], 'comp':comp, 'articles':[comp.news_set.filter(news_url__contains='sundayobserver'), comp.news_set.filter(news_url__contains='dailymirror')]}
     return render(request, 'cse_app/news.html', context)

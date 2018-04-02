@@ -1,7 +1,21 @@
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer
-import nltk
+from cse_site.settings import CSE_ROOT
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.linear_model import SGDClassifier
+from nltk.stem.snowball import SnowballStemmer
+import sklearn.datasets
+import numpy as np
+import glob
+import os
+
+class StemmedCountVectorizer(CountVectorizer):
+    
+    def build_analyzer(self):
+        stemmer = SnowballStemmer("english")
+        analyzer = super(StemmedCountVectorizer, self).build_analyzer()
+        return lambda doc: ([stemmer.stem(word) for word in analyzer(doc)])
 
 class Categorizer:
 
@@ -13,39 +27,27 @@ class Categorizer:
         input: content of a article
         output: category of the article
         '''
+        categories = ['awards', 'expansion', 'financing', 'production', 'others']
+        train_data, train_target = [], []
         # data preparation
-        '''
-        add related keywords for corresponding categories of the data_set.
-        make sure that all categories have the same number of keywords, to get better result.
-        '''
-        data_set = [('position vision mission goal objective authority capital', 'position'),
-                    ('award win won ceremony congratulation congratulate honour', 'awards'),
-                    ('expansion new branch bureau division office section', 'expanision'),
-                    ('finance investment asset contribution five six seven', 'financing'),
-                    ('production products goods four five six seven', 'production'),
-                    ('quality good product four five six seven', 'quality'),
-                    ('merchandising marketing three four five six seven', 'merchandising'),
-                    ('corporate social responsibility four five six seven', 'csr')]
-        # feature extraction
-        all_features = set(word.lower() for data in data_set for word in word_tokenize(data[0]))
-        train_set = [({feature: (feature in word_tokenize(data[0])) for feature in all_features}, data[1]) for data in data_set]
-        # training
-        classifier = nltk.NaiveBayesClassifier.train(train_set)
-        # get content
-        sentence = content.lower()
-        # tokenize words
-        words = word_tokenize(sentence)
-        # words stemming
-        ps = PorterStemmer()
-        # stop words
-        stop_words = set(stopwords.words('english'))
-        # filter words
-        filtered_words = []
-        for word in words:
-            # filter out all stop words and punctuations
-            if (word.isalpha()) and (word not in stop_words):
-                filtered_words.append(ps.stem(word))
-        # prediction
-        test_features = {feature.lower(): (feature in filtered_words) for feature in all_features}
-        result = classifier.classify(test_features)
-        return result
+        for category in categories:
+            files = glob.glob(CSE_ROOT + '/train_data/%s/%s_*' % (category, category))
+            for file in files:
+                f = open(file, "r", encoding="utf8")
+                if f:
+                    train_data.append(f.read())
+                    train_target.append(category)
+        # create train dataset
+        train_dataset = sklearn.datasets.base.Bunch(data=train_data, target=train_target)
+        # support vector machine
+        text_clf_svm = Pipeline([
+                                ('vect', StemmedCountVectorizer(stop_words='english')),
+                                ('tfidf', TfidfTransformer()),
+                                ('clf-svm', SGDClassifier())
+                                ])
+        # train
+        text_clf_svm = text_clf_svm.fit(train_dataset.data, train_dataset.target)
+        # predict
+        predicted_svm = text_clf_svm.predict([content])
+        # return svm result
+        return predicted_svm[0]
