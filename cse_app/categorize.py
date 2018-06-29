@@ -9,6 +9,7 @@ import sklearn.datasets
 import numpy as np
 import glob
 import os
+import pickle
 
 class StemmedCountVectorizer(CountVectorizer):
     
@@ -26,6 +27,7 @@ class Categorizer:
         '''
         input: content of a article
         output: category of the article
+        '''
         '''
         categories = ['awards', 'expansion', 'financing', 'production', 'others']
         train_data, train_target = [], []
@@ -47,6 +49,13 @@ class Categorizer:
                                 ])
         # train
         text_clf_svm = text_clf_svm.fit(train_dataset.data, train_dataset.target)
+        # save trained svm_txt_clf.sav model
+        with open(CSE_ROOT + '/svm_txt_clf.sav', 'wb') as f:
+            pickle.dump(text_clf_svm, f)
+        '''
+        # load pre-trained svm_txt_clf.sav model
+        with open(CSE_ROOT + '/svm_txt_clf.sav', 'rb') as f:
+            text_clf_svm = pickle.load(f)
         # predict
         predicted_svm = text_clf_svm.predict([content])
         # return svm result
