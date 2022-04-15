@@ -1,6 +1,6 @@
 # Natural Language Processing for Online Articles with Python
 
-This application is developed as a university research project to summarize and categorize online articles using natural language processing tools such as sklearn, SVM.
+This application is developed as a university research project to summarize and categorize online articles using natural language processing tools such as NLTK, Sklearn and SVM.
 
 ### Languages & Tools
 
